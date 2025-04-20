@@ -7,18 +7,11 @@ import path from "path";
 import fs from "fs";
 
 export default function Home() {
-  // Read companies from CSV file
+  // Read companies from all CSV files
   const getCompanies = (): Company[] => {
     try {
-      const filePath = path.join(process.cwd(), 'lib', 'list1.csv');
-      
-      // Check if file exists
-      if (!fs.existsSync(filePath)) {
-        console.error("CSV file not found:", filePath);
-        return [];
-      }
-      
-      return readCompaniesFromCSV(filePath);
+      const baseDir = path.join(process.cwd(), 'lib');
+      return readCompaniesFromCSV(baseDir);
     } catch (error) {
       console.error("Error loading companies:", error);
       return [];
@@ -57,7 +50,7 @@ export default function Home() {
                 ))
               ) : (
                 <div className="col-span-2 text-center py-8">
-                  <p className="text-gray-500">No companies found. Please check your CSV file format.</p>
+                  <p className="text-gray-500">No companies found. Please check your CSV files.</p>
                 </div>
               )}
             </div>

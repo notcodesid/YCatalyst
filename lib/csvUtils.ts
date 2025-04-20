@@ -17,10 +17,20 @@ export interface Company {
   teamSize: number;
   location: string;
   socials: string;
+  source?: string; // Optional field to track which file the data came from
 }
 
-export function readCompaniesFromCSV(filePath: string): Company[] {
+/**
+ * Read companies from a single CSV file
+ */
+export function readCompaniesFromSingleCSV(filePath: string, source?: string): Company[] {
   try {
+    // Check if file exists
+    if (!fs.existsSync(filePath)) {
+      console.warn(`CSV file not found: ${filePath}`);
+      return [];
+    }
+
     // Read the CSV file
     const csvContent = fs.readFileSync(filePath, 'utf8');
     
@@ -65,13 +75,39 @@ export function readCompaniesFromCSV(filePath: string): Company[] {
         founded: row['Founded']?.toString() || '',
         teamSize: Number(row['Team Size']) || 0,
         location: row['Location'] || '',
-        socials: row['Socials'] || ''
+        socials: row['Socials'] || '',
+        source: source
       };
     });
     
     return companies;
   } catch (error) {
-    console.error('Error reading CSV file:', error);
+    console.error(`Error reading CSV file ${filePath}:`, error);
     return [];
   }
+}
+
+/**
+ * Read companies from all CSV files
+ */
+export function readCompaniesFromCSV(baseDir: string): Company[] {
+  const csvFiles = [
+    path.join(baseDir, 'list1.csv'),
+    path.join(baseDir, 'list2.csv'),
+    path.join(baseDir, 'list3.csv'),
+    path.join(baseDir, 'list4.csv')
+  ];
+  
+  let allCompanies: Company[] = [];
+  
+  // Read each CSV file and combine the results
+  csvFiles.forEach((filePath, index) => {
+    const fileName = path.basename(filePath);
+    const companies = readCompaniesFromSingleCSV(filePath, fileName);
+    console.log(`Read ${companies.length} companies from ${fileName}`);
+    allCompanies = [...allCompanies, ...companies];
+  });
+  
+  console.log(`Total companies loaded: ${allCompanies.length}`);
+  return allCompanies;
 }
