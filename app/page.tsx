@@ -183,13 +183,12 @@ export default function Home() {
 
   return (
     <>
-    <Appbar />
+    {/* <Appbar /> */}
     <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">Startup Directory</h1>
+          <h1 className="text-4xl font-bold mb-4">YCatalyst Directory</h1>
           <p className="text-gray-600 mb-8">
-            Discover innovative startups and their groundbreaking solutions.
-          </p>
+          Your one-stop database for all Y Combinator startups, offering quick access to essential company information, founder details, and funding data.</p>
           <div className="flex flex-col md:flex-row gap-4 items-start justify-between">
             <SearchBar onSearch={handleSearch} />
             <select 
