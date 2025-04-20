@@ -2,7 +2,7 @@
 
 YCatalyst is a comprehensive directory of Y Combinator startups, offering quick access to essential company information, founder details, and funding data. Built with Next.js 15, React, TypeScript, and Tailwind CSS.
 
-![YCatalyst Directory](/image.png)
+![YCatalyst Directory](https://pbs.twimg.com/media/Go_nE4WXkAA8Eht?format=jpg&name=4096x4096)
 
 ## Features
 
