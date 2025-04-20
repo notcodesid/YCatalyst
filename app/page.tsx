@@ -2,23 +2,31 @@ import Appbar from "@/components/appbar";
 import CompanyCard from "@/components/companycard";
 import CompanyFilters from "@/components/companyfilter";
 import SearchBar from "@/components/searchbar";
+import { readCompaniesFromCSV, Company } from "@/lib/csvUtils";
+import path from "path";
+import fs from "fs";
 
 export default function Home() {
-
-  const EXAMPLE_COMPANY = {
-    name: "Raycaster",
-    website: "https://raycaster.ai",
-    description: "Raycaster helps companies sell complex technical products by surfacing hidden insights about their prospects. Our customers use us to automatically uncover everything from lab equipment specifications to API performance metrics - research that traditionally took weeks of manual digging.",
-    industry: "Research and Sales Intelligence",
-    founders: [
-      { name: "Levi Lian", linkedin: "https://linkedin.com/in/levi-lian" },
-      { name: "Anthony Humay", linkedin: "https://linkedin.com/in/ahumay" }
-    ],
-    founded: "2024",
-    teamSize: 2,
-    location: "SF",
-    socials: "https://www.linkedin.com/company/raycasterai"
+  // Read companies from CSV file
+  const getCompanies = (): Company[] => {
+    try {
+      const filePath = path.join(process.cwd(), 'lib', 'list1.csv');
+      
+      // Check if file exists
+      if (!fs.existsSync(filePath)) {
+        console.error("CSV file not found:", filePath);
+        return [];
+      }
+      
+      return readCompaniesFromCSV(filePath);
+    } catch (error) {
+      console.error("Error loading companies:", error);
+      return [];
+    }
   };
+
+  // Get companies data
+  const companies = getCompanies();
 
   return (
     <>
@@ -43,9 +51,15 @@ export default function Home() {
           <CompanyFilters />
           <div className="flex-1">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <CompanyCard {...EXAMPLE_COMPANY} />
-              <CompanyCard {...EXAMPLE_COMPANY} />
-              <CompanyCard {...EXAMPLE_COMPANY} />
+              {companies.length > 0 ? (
+                companies.map((company, index) => (
+                  <CompanyCard key={index} {...company} />
+                ))
+              ) : (
+                <div className="col-span-2 text-center py-8">
+                  <p className="text-gray-500">No companies found. Please check your CSV file format.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
