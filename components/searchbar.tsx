@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -10,12 +10,35 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedTerm, setDebouncedTerm] = useState('');
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  // Handle input change
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    onSearch(value);
+    
+    // Clear any existing timeout
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    
+    // Set a new timeout to update the debounced value after 300ms
+    debounceTimeout.current = setTimeout(() => {
+      setDebouncedTerm(value);
+    }, 300);
   };
+  
+  // Send search request when debounced term changes
+  useEffect(() => {
+    onSearch(debouncedTerm);
+    // Clean up timeout on unmount
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, [debouncedTerm, onSearch]);
 
   return (
     <div className="relative">
