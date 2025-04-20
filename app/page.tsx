@@ -207,6 +207,7 @@ export default function Home() {
           <CompanyFilters 
             companies={companies} 
             onFilterChange={handleFilterChange} 
+            loading={loading}
           />
           <div className="flex-1">
             {loading ? (

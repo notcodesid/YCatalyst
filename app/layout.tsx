@@ -15,6 +15,28 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "YCatalyst",
   description: "Your one-stop database for all Y Combinator startups, offering quick access to essential company information, founder details, and funding data.",
+  metadataBase: new URL("https://ycatalyst.notcodesid.xyz/"),
+  openGraph: {
+    title: "YCatalyst",
+    description: "Your one-stop database for all Y Combinator startups, offering quick access to essential company information, founder details, and funding data.",
+    url: "https://ycatalyst.notcodesid.xyz/",
+    siteName: "YCatalyst",
+    images: [
+      {
+        url: "/ycatalyst.png",
+        width: 1200,
+        height: 630,
+      },
+    ],  
+    locale: "en-IN",
+    type: "article",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "YCatalyst",
+    description: "Your one-stop database for all Y Combinator startups, offering quick access to essential company information, founder details, and funding data.",
+    images: ["/ycatalyst.png"],
+  },
 };
 
 export default function RootLayout({
