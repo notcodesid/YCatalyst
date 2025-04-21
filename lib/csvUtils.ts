@@ -99,15 +99,29 @@ export function readCompaniesFromCSV(baseDir: string): Company[] {
   ];
   
   let allCompanies: Company[] = [];
+  const uniqueCompanies = new Map<string, Company>();
   
   // Read each CSV file and combine the results
   csvFiles.forEach((filePath, index) => {
     const fileName = path.basename(filePath);
     const companies = readCompaniesFromSingleCSV(filePath, fileName);
     console.log(`Read ${companies.length} companies from ${fileName}`);
+    
+    // Add to all companies for logging purposes
     allCompanies = [...allCompanies, ...companies];
+    
+    // Add to unique companies map, using company name + website as the key
+    companies.forEach(company => {
+      const key = `${company.name}|${company.website}`.toLowerCase();
+      if (!uniqueCompanies.has(key)) {
+        uniqueCompanies.set(key, company);
+      }
+    });
   });
   
+  const uniqueCompaniesArray = Array.from(uniqueCompanies.values());
   console.log(`Total companies loaded: ${allCompanies.length}`);
-  return allCompanies;
+  console.log(`Unique companies after deduplication: ${uniqueCompaniesArray.length}`);
+  
+  return uniqueCompaniesArray;
 }
