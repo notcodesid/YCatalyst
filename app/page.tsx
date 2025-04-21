@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Appbar from "@/components/appbar";
-import CompanyCard from "@/components/companycard";
+import CompanyCard, { CompanyCardSkeleton } from "@/components/companycard";
 import CompanyFilters, { FilterState } from "@/components/companyfilter";
 import SearchBar from "@/components/searchbar";
 import { Company } from "@/lib/csvUtils";
@@ -211,8 +211,10 @@ export default function Home() {
           />
           <div className="flex-1">
             {loading ? (
-              <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <CompanyCardSkeleton key={index} />
+                ))}
               </div>
             ) : (
               <>
@@ -237,8 +239,10 @@ export default function Home() {
                 </div>
                 
                 {loadingMore && (
-                  <div className="flex justify-center items-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                    {Array.from({ length: 2 }).map((_, index) => (
+                      <CompanyCardSkeleton key={index} />
+                    ))}
                   </div>
                 )}
                 
